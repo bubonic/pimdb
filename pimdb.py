@@ -405,8 +405,12 @@ def dlPosters(tt, the_movie, posters):
                 urlPre = img['src'].split('._')[0]
                 url = urlPre + ".jpg"
                 file_name = "Poster-" + str(k) + ".jpg"
-                u = urllib.request.urlopen(url)
-                f = open(file_name, 'wb')
+                try: 
+                    u = urllib.request.urlopen(url)
+                    f = open(file_name, 'wb')
+                except (OSError, urllib.error.URLError):
+                    print("Error retrieving %k-th poster... skipping" % k)
+                    continue; 
                 meta = u.info()
                 file_size = int(meta.get("Content-Length"))
                 print("Downloading: %s Bytes: %s" % (file_name, file_size))
@@ -431,7 +435,7 @@ def dlPosters(tt, the_movie, posters):
     
     else:
         print("Goodbye.")
-
+    os.system("cd " + posterDir)
 #imdbTT=sys.argv[1].split('tt')[-1].split('/', 1)[0]
 
 def main():
