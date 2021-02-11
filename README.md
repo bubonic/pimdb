@@ -1,6 +1,6 @@
-# PIMDB
+# piMDB
 
-A Python IMDB Parser and BBCode Generator. This little tool is useful for posting nice torrent announces on various torrent sites that allow BBCode. It uses IMDBPy as the scraper and retrieves various objects. It also creates a folder in the current working directory of the film name and downloads all the posters on IMDB to that folder - useful for adding art to your psot. 
+A Python IMDB Parser and BBCode Generator. This little tool is useful for posting nice torrent announces on various torrent sites that allow BBCode. It uses IMDBPy as the scraper and retrieves various objects. It also creates a folder in the current working directory of the film name and downloads all the posters on IMDB to that folder - useful for adding art to your post. 
 
 # Requirements 
 
