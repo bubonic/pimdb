@@ -392,8 +392,9 @@ def dlPosters(tt, the_movie, posters):
     
     
     if option.upper() == "Y":
-        parentDir = the_movie['title'].replace(' ', '')
+        parentDir = the_movie['title'].replace(' ', '').replace('/', '')
         posterDir = 'Posters' 
+        cwd = os.getcwd()
         if not path.exists(parentDir):
             os.mkdir(parentDir)
         os.chdir(parentDir)
@@ -405,12 +406,19 @@ def dlPosters(tt, the_movie, posters):
                 urlPre = img['src'].split('._')[0]
                 url = urlPre + ".jpg"
                 file_name = "Poster-" + str(k) + ".jpg"
+                file_path = path.join(cwd, parentDir, posterDir, str(file_name))
+                if path.isfile(path.abspath(file_path)):
+                    print("File Exists... Skipping...")
+                    k += 1
+                    continue
                 try: 
                     u = urllib.request.urlopen(url)
                     f = open(file_name, 'wb')
-                except (OSError, urllib.error.URLError):
-                    print("Error retrieving %k-th poster... skipping" % k)
-                    continue; 
+                except (OSError, urllib.error.URLError, Exception) as e:
+                    print("Error retrieving %s-th poster... (%s)" % (k, str(e)))
+                    print("Skipping....")
+                    k += 1
+                    continue 
                 meta = u.info()
                 file_size = int(meta.get("Content-Length"))
                 print("Downloading: %s Bytes: %s" % (file_name, file_size))
@@ -430,12 +438,14 @@ def dlPosters(tt, the_movie, posters):
                 k += 1
             else: 
                 break
-        
-        f.close()
+        try:
+            f.close()
+        except Exception as e:
+            print(str(e))
     
     else:
         print("Goodbye.")
-    os.system("cd " + posterDir)
+    os.system("cd " + parentDir + '/' + posterDir)
 #imdbTT=sys.argv[1].split('tt')[-1].split('/', 1)[0]
 
 def main():
